@@ -5,7 +5,7 @@ const router = express.Router();
 
 //router.use(authMiddleware);
 router.get('/', orderManager.getOrders);
-router.get('/:id', orderManager.getOrderById);
+router.get('/name', orderManager.getOrderById);
 
 module.exports = router;
 

@@ -11,8 +11,8 @@ const getOrders = async (req, res) => {
 };
 const getOrderById = async (req, res) => {
     try {
-        const {orderId} = req.body
-        const product = await orderManager.getOrderById(orderId);
+        const {customerName, code} = req.body;
+        const product = await orderManager.getOrderById(customerName,code);
         res.json(product);
     } catch (err) {
         console.error(err.message);

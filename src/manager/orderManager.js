@@ -6,8 +6,9 @@ const getOrders = async (req, res) => {
 };
 const getOrderById = async (req, res) => {
     try {
-      const orderId = req.params.id;
-      const order = await Order.findOne({ _id: orderId }); //userId: req.user.userId
+      const {customerName, code} = req.body;
+      //const orderId = req.params.id;
+      const order = await Order.findOne({ customerName: customerName, code: code }); // { _id: orderId } userId: req.user.userId
   
       if (!order) {
         return res.status(404).json({ message: 'Order not found' });

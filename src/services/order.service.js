@@ -11,9 +11,9 @@ const Order = require('../models/order.model.js');
 // };
 
 // Función para obtener una orden específica por su ID
-const getOrderById = async (orderId) => {
+const getOrderById = async ({ customerName: customerName, code: code }) => {
   try {
-    const order = await Order.findOne({ _id: orderId});
+    const order = await Order.findOne({ customerName: customerName, code: code }); // _id: orderId
     if (!order) {
       throw new Error('Order not found');
     }
