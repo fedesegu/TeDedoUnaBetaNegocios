@@ -1,4 +1,4 @@
-const Order = require('../models/order.model.js');
+import {orderManager} from "../DAL/manager/orderManager.js"
 
 // Función para obtener todas las órdenes de un usuario
 // const getOrdersByUserId = async (userId) => {
@@ -10,20 +10,33 @@ const Order = require('../models/order.model.js');
 //   }
 // };
 
-// Función para obtener una orden específica por su ID
-const getOrderById = async ({ customerName: customerName, code: code }) => {
-  try {
-    const order = await Order.findOne({ customerName: customerName, code: code }); // _id: orderId
-    if (!order) {
-      throw new Error('Order not found');
-    }
-    return order;
-  } catch (error) {
-    throw new Error('Error fetching order: ' + error.message);
-  }
-};
 
-module.exports = {
-  //getOrdersByUserId,
-  getOrderById,
-};
+  export const getOrderByName = async (customerName, code) =>{
+    const order = await orderManager.findByName(customerName, code);
+    return order;
+  }
+
+
+
+
+
+
+
+
+// Función para obtener una orden específica por su ID
+// const getOrderById = async ({ customerName: customerName, code: code }) => {
+//   try {
+//     const order = await ordermodel.findOne({ customerName: customerName, code: code }); // _id: orderId
+//     if (!order) {
+//       throw new Error('Order not found');
+//     }
+//     return order;
+//   } catch (error) {
+//     throw new Error('Error fetching order: ' + error.message);
+//   }
+// };
+
+// module.exports = {
+//   //getOrdersByUserId,
+//   getOrderById,
+// };

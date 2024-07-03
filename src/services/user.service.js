@@ -1,14 +1,28 @@
-const User = require('../models/user.model.js');
+import { usersManager } from "../DAL/manager/userManager.js";
+import UsersRequestDto from "../DAL/dtos/users-request.dto.js";
+import UsersResponseDto from "../DAL/dtos/users-response.dto.js";
+import { hashData } from "../utils/utils.js";
 
-const registerUser = async (username, password) => {
-  const hashedPassword = await bcrypt.hash(password, 10); // Hasheando la contraseña
-  const user = new User({ username, password: hashedPassword });
-  await user.save();
-  return user;
-};
 
-const findUserByUsername = async (username) => {
-  return await User.findOne({ username });
-};
+  export const getAll = async () => {
+    return usersManager.getAll();
+  }
 
-module.exports = { registerUser, findUserByUsername };
+  export const getById = async(id)=> {
+    const user = await usersManager.getById(id);
+    const userDTO = new UsersResponseDto(user);
+    return userDTO;
+  }
+
+  export const create = async(user) => {
+    const hashPassword = await hashData(user.password);
+    const userDto = new UsersRequestDto({ ...user, password: hashPassword });
+    const createdUser = await usersManager.createOne(userDto);
+    return createdUser;
+  }
+
+  export const deleteOne = async (id) => {
+    return usersManager.deleteOne(id);
+  }
+
+

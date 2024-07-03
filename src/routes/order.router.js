@@ -1,11 +1,11 @@
-const express = require('express');
-const orderManager = require('../manager/orderManager.js');
-const authMiddleware = require('../middlewares/jwt.middleware.js');
+import express from "express";
+import {getOrderByCustomerName} from "../controllers/order.controller.js";
+
 const router = express.Router();
 
 //router.use(authMiddleware);
-router.get('/', orderManager.getOrders);
-router.get('/name', orderManager.getOrderById);
+//router.get('/', getOrders);
+router.get('/name', getOrderByCustomerName);
 
-module.exports = router;
+export default router; 
 
