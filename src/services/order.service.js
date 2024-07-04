@@ -1,20 +1,36 @@
-import {orderManager} from "../DAL/manager/orderManager.js"
+import pool from "../configDB.js";
 
-// Función para obtener todas las órdenes de un usuario
-// const getOrdersByUserId = async (userId) => {
-//   try {
-//     const orders = await Order.find({ userId });
-//     return orders;
-//   } catch (error) {
-//     throw new Error('Error fetching orders: ' + error.message);
+export const getOrderByName = async (customerName, code) => {
+    const [rows] = await pool.query("SELECT * FROM ordenes WHERE customerName = ? AND code = ?", [customerName, code]);
+    return rows;
+}
+
+
+
+
+
+
+
+
+
+
+// import {orderManager} from "../DAL/manager/orderManager.js"
+
+// // Función para obtener todas las órdenes de un usuario
+// // const getOrdersByUserId = async (userId) => {
+// //   try {
+// //     const orders = await Order.find({ userId });
+// //     return orders;
+// //   } catch (error) {
+// //     throw new Error('Error fetching orders: ' + error.message);
+// //   }
+// // };
+
+
+//   export const getOrderByName = async (customerName, code) =>{
+//     const order = await orderManager.findByName(customerName, code);
+//     return order;
 //   }
-// };
-
-
-  export const getOrderByName = async (customerName, code) =>{
-    const order = await orderManager.findByName(customerName, code);
-    return order;
-  }
 
 
 
