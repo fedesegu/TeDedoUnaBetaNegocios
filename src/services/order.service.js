@@ -1,9 +1,19 @@
-import pool from "../configDB.js";
+import pool from "../DB/configDB.js";
 
 export const getOrderByName = async (customerName, code) => {
     const [rows] = await pool.query("SELECT * FROM ordenes WHERE customerName = ? AND code = ?", [customerName, code]);
     return rows;
 }
+
+export const create = async (id_product, customerName) => {
+    try {
+        const query = "INSERT INTO ordenes (productId, customerName) VALUES (?, ?)";
+        const [result] = await pool.query(query, [id_product, customerName]);
+        return { id: result.insertId, id_product, customerName };
+    } catch (err) {
+        throw new Error('Error creating order: ' + err.message);
+    }
+};
 
 
 

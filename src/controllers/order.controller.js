@@ -1,4 +1,4 @@
-import { getOrderByName } from "../services/order.service.js";
+import { getOrderByName, create} from "../services/order.service.js";
 
 // export const getOrders = async (req, res) => {
 //     try {
@@ -31,6 +31,19 @@ export const getOrderByCustomerName = async (req, res) => {
 
         const product = await getOrderByName(customerName, code);
         res.json(product);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server error');
+    }
+};
+export const createOrder = async (req, res) => {
+    console.log('Request body:', req.body);  // Debugging log
+    const { id_product, customerName } = req.body;
+    console.log('Product ID:', id_product);   // Debugging log
+    console.log('Customer Name:', customerName);   // Debugging log
+    try {
+        const order = await create(id_product, customerName);
+        res.status(201).json(order);
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Server error');
