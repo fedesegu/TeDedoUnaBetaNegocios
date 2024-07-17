@@ -6,6 +6,8 @@ import orderRoutes from "./routes/order.router.js";
 import usersRoutes from "./routes/user.router.js";
 import viewsRouter from "./routes/views.router.js";
 import sessionRouter from "./routes/session.router.js";
+import negociosRouter from "./routes/negocios.router.js";
+
 import pool from "./DB/configDB.js";
 
 dotenv.config();
@@ -39,6 +41,7 @@ app.use('/api/users', usersRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/views', viewsRouter);
 app.use('/api/session', sessionRouter);
+app.use('/api/negocios', negociosRouter);s
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
