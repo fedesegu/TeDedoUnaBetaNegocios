@@ -1,18 +1,18 @@
 import { Router } from "express";
-import { authMiddleware } from '../middlewares/auth.middleware.js';
+//import { authMiddleware } from '../middlewares/auth.middleware.js';
 import jwt from "jsonwebtoken";
-import { productsManager } from '../DAL/daos/mongoDB/productManagerDB.js'
-import { cartsManager } from '../DAL/daos/mongoDB/cartsManagerDB.js'
-import { usersManager } from '../DAL/daos/mongoDB/usersManagerDB.js'
-import { ticketsManager } from "../DAL/daos/mongoDB/ticketManagerDB.js";
-import { Cookie } from "express-session";
+//import { productsManager } from '../DAL/daos/mongoDB/productManagerDB.js'
+//import { cartsManager } from '../DAL/daos/mongoDB/cartsManagerDB.js'
+//import { usersManager } from '../DAL/daos/mongoDB/usersManagerDB.js'
+//import { ticketsManager } from "../DAL/daos/mongoDB/ticketManagerDB.js";
+//import { Cookie } from "express-session";
 import passport from "passport";
 import cookieParser from 'cookie-parser';
-import { generateProduct } from "../faker.js";
+//import { generateProduct } from "../faker.js";
 import config from "../config/config.js";
-import { paginate } from "mongoose-paginate-v2";
+//import { paginate } from "mongoose-paginate-v2";
 import path from 'path';
-import { oldUsers } from "../controllers/users.controller.js";
+//import { oldUsers } from "../controllers/users.controller.js";
 
 
 

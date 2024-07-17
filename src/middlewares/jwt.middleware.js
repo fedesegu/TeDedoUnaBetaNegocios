@@ -1,17 +1,18 @@
-// const jwt = require('jsonwebtoken');
+import jwt from "jsonwebtoken";
+import config from "../config/config.js" 
 
-// const authMiddleware = (req, res, next) => {
-//   const token = req.cookies.token;
-//   if (!token) {
-//     return res.status(401).json({ message: 'Unauthorized' });
-//   }
-//   try {
-//     const decoded = jwt.verify(token, 'secret');
-//     req.user = decoded;
-//     next();
-//   } catch (err) {
-//     res.status(401).json({ message: 'Invalid token' });
-//   }
-// };
 
-// module.exports = authMiddleware;
+const secretKeyJwt = config.secret_jwt;
+
+
+export const jwtValidation = (req, res, next) => {
+    try {
+        console.log(req);
+        const token = req.cookies.token;
+        const userToken = jwt.verify(token, secretKeyJwt);
+        req.user = userToken;
+        next();
+    } catch (error) {
+        res.json({ error: error.message });
+    }
+};

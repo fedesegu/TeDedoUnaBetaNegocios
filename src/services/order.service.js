@@ -1,5 +1,14 @@
 import pool from "../DB/configDB.js";
 
+export const getAllOrders = async () => {
+    try {
+        const [rows] = await pool.query("SELECT * FROM ordenes");
+        return rows;
+    } catch (err) {
+        throw new Error('Error fetching orders: ' + err.message);
+    }
+};
+
 export const getOrderByName = async (customerName, code) => {
     const [rows] = await pool.query("SELECT * FROM ordenes WHERE customerName = ? AND code = ?", [customerName, code]);
     return rows;
