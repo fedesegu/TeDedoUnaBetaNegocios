@@ -1,4 +1,4 @@
-import {getNegociosById, create} from "../services/negocios.service";
+import {getNegociosById, create} from "../services/negocios.service.js";
 
 export const getNegociosByids = async (req, res) => {
         try {
@@ -15,10 +15,11 @@ export const getNegociosByids = async (req, res) => {
     };
     export const createNegocio = async (req, res) =>{
         try {
-           const {userid_negocios, name_negocios} = req.body
-           const negocio = await create (userid_negocios, name_negocios);
+           const {name_negocio} = req.body
+           const negocio = await create (name_negocio);
            res.status(201).json(negocio);
         } catch (error) {
+        console.log(error);
         res.status(500).send('Server error');
         }
     }

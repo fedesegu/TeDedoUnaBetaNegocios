@@ -4,11 +4,11 @@ export const getNegociosById = async () => {
     const [rows] = await pool.query("SELECT * FROM negocios WHERE userid_negocios = ?", [userid_negocios, name_negocios]);
     return rows;
 }
-export const create = async (userid_negocios, name_negocios) => {
+export const create = async ( name_negocio) => {
     try {
-        const query = "INSERT INTO negocios (userid_negocios, name_negocios) VALUES (?, ?)";
-        const [result] = await pool.query(query, [userid_negocios, name_negocios]);
-        return { id: result.insertId, userid_negocios, name_negocios };
+        const query = "INSERT INTO negocio (name_negocio) VALUES (?)";
+        const [result] = await pool.query(query, [name_negocio]);
+        return { id: result.insertId, name_negocio };
     } catch (err) {
         throw new Error('Error creating negocio: ' + err.message);
     }
