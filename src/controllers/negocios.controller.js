@@ -19,6 +19,6 @@ export const getNegociosByids = async (req, res) => {
            const negocio = await create (userid_negocios, name_negocios);
            res.status(201).json(negocio);
         } catch (error) {
-            
+        res.status(500).send('Server error');
         }
     }
