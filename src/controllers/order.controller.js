@@ -49,3 +49,23 @@ export const createOrder = async (req, res) => {
         res.status(500).send('Server error');
     }
 };
+
+export const handlePaymentNotification = async (req, res) => {
+    try {
+        const { query } = req;
+        if (query.topic === 'payment') {
+            const payment = await mercadopago.payment.findById(query.id);
+            const external_reference = payment.body.external_reference;
+            const status = payment.body.status;
+
+            if (status === 'approved') {
+                const updateQuery = "UPDATE ordenes SET payment_status = 1 WHERE id = ?";
+                await pool.query(updateQuery, [external_reference]);
+            }
+        }
+        res.status(200).send('OK');
+    } catch (err) {
+        console.error('Error handling payment notification:', err);
+        res.status(500).send('Server error');
+    }
+};

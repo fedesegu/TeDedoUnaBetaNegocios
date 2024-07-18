@@ -1,4 +1,4 @@
-import {getNegociosById, create, getUserBusinesses} from "../services/negocios.service.js";
+import {create, getUserBusinesses} from "../services/negocios.service.js";
 import jwt from "jsonwebtoken";
 
 export const getNegociosByids = async (req, res) => {

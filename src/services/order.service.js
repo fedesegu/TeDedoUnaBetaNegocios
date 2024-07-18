@@ -17,13 +17,47 @@ export const getOrderByName = async (customerName, code) => {
     const [rows] = await pool.query("SELECT * FROM ordenes WHERE customerName = ? AND code = ?", [customerName, code]);
     return rows;
 }
+const getProductDetails = async (id_product) => {
+    try {
+        const query = "SELECT name, price, quantity FROM productos WHERE id = ?";
+        const [rows] = await pool.query(query, [id_product]);
+        if (rows.length > 0) {
+            return rows[0];
+        } else {
+            throw new Error('Product not found');
+        }
+    } catch (err) {
+        throw new Error('Error getting product details: ' + err.message);
+    }
+};
 
 export const create = async (id_product, customerName) => {
     try {
+        const productDetails = await getProductDetails(id_product);
         const randomNumber = generateRandomNumber();
         const query = "INSERT INTO ordenes (productId, payment_status, customerName, random_number) VALUES (?, 0, ?, ?)";
         const [result] = await pool.query(query, [id_product, customerName, randomNumber]);
-        return { id: result.insertId, id_product, customerName, randomNumber};
+
+        const preference = {
+            items: [
+                {
+                    title: productDetails.name,
+                    quantity: productDetails.quantity,
+                    unit_price: productDetails.price,
+                },
+            ],
+            external_reference: String(result.insertId),
+            back_urls: {
+                success: "http://www.your-site.com/success",
+                failure: "http://www.your-site.com/failure",
+                pending: "http://www.your-site.com/pending",
+            },
+            auto_return: "approved",
+        };
+
+        const response = await mercadopago.preferences.create(preference);
+
+        return { id: result.insertId, id_product, customerName, randomNumber, init_point: response.body.init_point };
     } catch (err) {
         throw new Error('Error creating order: ' + err.message);
     }
