@@ -1,5 +1,9 @@
 import pool from "../DB/configDB.js";
 
+const generateRandomNumber = () => {
+    return Math.floor(1000 + Math.random() * 9000);
+  };
+
 export const getAllOrders = async () => {
     try {
         const [rows] = await pool.query("SELECT * FROM ordenes");
@@ -16,9 +20,10 @@ export const getOrderByName = async (customerName, code) => {
 
 export const create = async (id_product, customerName) => {
     try {
-        const query = "INSERT INTO ordenes (productId, customerName) VALUES (?, ?)";
-        const [result] = await pool.query(query, [id_product, customerName]);
-        return { id: result.insertId, id_product, customerName };
+        const randomNumber = generateRandomNumber();
+        const query = "INSERT INTO ordenes (productId, payment_status, customerName, random_number) VALUES (?, 0, ?, ?)";
+        const [result] = await pool.query(query, [id_product, customerName, randomNumber]);
+        return { id: result.insertId, id_product, customerName, randomNumber};
     } catch (err) {
         throw new Error('Error creating order: ' + err.message);
     }
