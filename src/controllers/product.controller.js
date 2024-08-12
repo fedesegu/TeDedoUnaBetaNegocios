@@ -13,6 +13,7 @@ export const getProduct = async (req, res) => {
 export const createOneProduct = async (req, res) => {
     try {
         const product = await createOneProduct(name_productos, negocioid_productos);
+        console.log("probando controlador de producto");
         res.status(201).json(product)
     } catch (error) {
         
