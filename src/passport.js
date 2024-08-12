@@ -20,14 +20,14 @@ passport.use("signup", new LocalStrategy(
             return done(null, false, {message: 'All fields are required'});
         }
         
-        const cart = await cartsManager.createOne();
+        //const cart = await cartsManager.createOne();
         
         try {
             const hashedPassword = await hashData(password);
             const createdUser = await usersManager.createOne({
             ...req.body,
             password: hashedPassword,
-            cartId : cart._id,
+            //cartId : cart._id,
             });
             done(null, createdUser);
         } catch (error) {
