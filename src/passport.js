@@ -1,68 +1,82 @@
 import passport from "passport";
-import { logger } from "../src/utils/logger.js"
-import { usersManager } from "../src/DAL/daos/mongoDB/usersManagerDB.js";
-import { cartsManager } from '../src/DAL/daos/mongoDB/cartsManagerDB.js'
-import { ExtractJwt, Strategy as JWTStrategy } from "passport-jwt";
 import { Strategy as LocalStrategy } from "passport-local";
-//import { Strategy as GithubStrategy } from "passport-github2";
-//import { Strategy as GoogleStrategy } from "passport-google-oauth20";
-import { hashData, compareData } from "../src/utils/utils.js";
-import UsersResponse from "./DAL/dtos/users-response.dto.js";
-
+import { ExtractJwt, Strategy as JWTStrategy } from "passport-jwt";
+import   
+ { hashData, compareData } from "../src/utils/utils.js";
+import { getById, getByEmail, create } from "../services/user.service.js"; 
 import config from "../src/config/config.js";
 
 const secretKeyJwt = config.secret_jwt;
+
 passport.use("signup", new LocalStrategy(
-        { passReqToCallback: true, usernameField: "email" },
-        async (req, email, password, done) => {
-        const { name, lastName } = req.body;
+    { passReqToCallback: true, usernameField: "email" },
+    async (req, email, password, done) => {
+        const { name,   
+ lastName } = req.body;
         if (!name || !lastName || !email || !password) {
-            return done(null, false, {message: 'All fields are required'});
+            return done(null, false, { message: 'All fields are required' });
         }
-        
-        //const cart = await cartsManager.createOne();
-        
+
         try {
             const hashedPassword = await hashData(password);
-            const createdUser = await usersManager.createOne({
-            ...req.body,
-            password: hashedPassword,
-            //cartId : cart._id,
+            const createdUser = await create({ 
+                ...req.body,
+                password: hashedPassword,
             });
             done(null, createdUser);
         } catch (error) {
             done(error);
         }
-        }
-    )
-);
+    }
+));
 
-
+// Estrategia de inicio de sesión (login)
 passport.use("login", new LocalStrategy(
     { usernameField: "email" },
     async (email, password, done) => {
-        const req = this;
         if (!email || !password) {
-            return done(null, false, { message: "Email and password are required" });
+            return done(null, false, { message:   
+ "Email and password are required" });
         }
+
         try {
-            const user = await usersManager.findByEmail(email);
+            // Aquí debes adaptar la búsqueda del usuario para usar MySQL
+            const user = await getByEmail(email); // Asumiendo que tienes una función 'getByEmail' en tu servicio
+
             if (!user) {
                 return done(null, false, { message: "User not found" });
             }
-            
+
             const isPasswordValid = await compareData(password, user.password);
             if (!isPasswordValid) {
                 return done(null, false, { message: "Invalid password" });
             }
-            const userDate = await usersManager.updateOne(
-                { _id: user.id },
-                { last_connection: new Date() } 
-            );
-            const userLogin = await usersManager.findById(user.id);
-            return done(null, userLogin);
+
+            // No necesitas actualizar la última conexión en este punto, ya que no estás usando MongoDB
+
+            return done(null, user); 
         } catch (error) {
-            return done(error); 
+            return done(error);
+        }
+    }
+));
+
+// Estrategia JWT para proteger rutas
+passport.use("jwt", new JWTStrategy(
+    {
+        jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+        secretOrKey: secretKeyJwt,
+    },
+    async (jwtPayload,   
+ done) => {
+        try {
+            const user = await getById(jwtPayload.id); // Obtén el usuario por ID desde MySQL
+            if (!user) {
+                return done(null, false);
+            }
+            return done(null, user);
+        } catch (error) {
+            return done(error, false);
         }
     }
 ));

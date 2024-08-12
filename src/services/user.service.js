@@ -13,6 +13,10 @@ export const getById = async (id) => {
     const [rows] = await pool.query("SELECT * FROM usuarios WHERE id = ?", [id]);
     return new UsersResponseDto(rows[0]);
 }
+export const getByEmail = async(email) => {
+    const [rows] = await pool.query("SELECT * FROM usuarios WHERE email = ?", [id]);
+    return new UsersResponseDto(rows[0]);
+}
 
 export const create = async (user) => {
     const hashPassword = await hashData(user.password);
