@@ -157,7 +157,7 @@ passport.use('current', new JWTStrategy({
     secretOrKey: secretKeyJwt,
 }, async (jwt_payload, done) => {
     try {
-        const user = await usersManager.findByEmail(jwt_payload.mail);
+        const user = await getByEmail(jwt_payload.email);
 
         if (!user) {
             return done(null, false, { message: 'User not founded' });
@@ -188,7 +188,7 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser(async (id, done) => {
     try {
-        const user = await usersManager.findById(id);
+        const user = await getById(id);
         done(null, user);
     } catch (error) {
         done(error);

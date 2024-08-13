@@ -1,7 +1,7 @@
-import express from "express";
+import {Router} from "express";
 import {getOrderByCustomerName, createOrder, handlePaymentNotification} from "../controllers/order.controller.js";
 
-const router = express.Router();
+const router = Router();
 
 //router.use(authMiddleware);
 //router.get('/', getOrders);

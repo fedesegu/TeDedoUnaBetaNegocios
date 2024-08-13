@@ -36,7 +36,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 
-
 app.use('/api/users', usersRoutes);
 app.use('/api/orders', orderRoutes);
 //app.use('/api/views', viewsRouter);
@@ -45,3 +44,4 @@ app.use('/api/negocios', negociosRouter);
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+

@@ -1,6 +1,11 @@
-import express from "express";
-import { createOneProduct } from "../controllers/product.controller";
+import {Router} from "express";
+import { createOneProduct, updateProduct } from "../controllers/product.controller";
+
 
 const router = Router();
 
 router.post("/crear_producto", createOneProduct); 
+router.post("/actualizar_producto", updateProduct);
+router.get("/:pid", )
+
+export default router;
