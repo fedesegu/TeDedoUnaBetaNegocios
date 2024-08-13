@@ -22,8 +22,6 @@ export const createOneProduct = async (req, res) => {
     }
 }
 
-import { updatedProduct } from "../services/product.service.js";
-
 export const updateProduct = async (req, res) => {
     try {
         const productId = req.params.id; // Obtener el ID del producto desde los parámetros de la ruta
