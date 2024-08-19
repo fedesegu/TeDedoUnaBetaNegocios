@@ -7,6 +7,7 @@ import usersRoutes from "./routes/user.router.js";
 //import viewsRouter from "./routes/views.router.js";
 import sessionRouter from "./routes/session.router.js";
 import negociosRouter from "./routes/negocios.router.js";
+import mercadoPagoRouter from "./routes/mercadopago.router.js"
 
 import pool from "./DB/configDB.js";
 
@@ -41,6 +42,7 @@ app.use('/api/orders', orderRoutes);
 //app.use('/api/views', viewsRouter);
 app.use('/api/session', sessionRouter);
 app.use('/api/negocios', negociosRouter);
+app.use('/mercadopago', mercadoPagoRouter);
 
 const PORT = process.env.PORT || 34512;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
