@@ -55,7 +55,12 @@ export const create = async (id_product, customerName) => {
             auto_return: "approved",
         };
 
-        const response = await mercadopago.preferences.create(preference);
+        const response = await mercadopago.preferences.create(preference, {
+            headers: {
+                'Authorization': `Bearer `,
+                'Content-Type': 'application/json'
+            }
+        });
 
         return { id: result.insertId, id_product, customerName, randomNumber, init_point: response.body.init_point };
     } catch (err) {
