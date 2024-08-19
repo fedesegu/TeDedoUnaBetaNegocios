@@ -14,7 +14,7 @@ export const getById = async (id) => {
     return new UsersResponseDto(rows[0]);
 }
 export const getByEmail = async(email) => {
-    const [rows] = await pool.query("SELECT * FROM usuarios WHERE email = ?", [id]);
+    const [rows] = await pool.query("SELECT * FROM usuarios WHERE email = ?", [email]);
     return new UsersResponseDto(rows[0]);
 }
 
