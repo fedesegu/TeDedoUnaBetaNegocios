@@ -42,7 +42,7 @@ app.use('/api/orders', orderRoutes);
 //app.use('/api/views', viewsRouter);
 app.use('/api/session', sessionRouter);
 app.use('/api/negocios', negociosRouter);
-app.use('/mercadopago', mercadoPagoRouter);
+app.use('/api/mercadopago', mercadoPagoRouter);
 
 const PORT = process.env.PORT || 34512;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
