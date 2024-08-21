@@ -38,11 +38,11 @@ export const getOrderByCustomerName = async (req, res) => {
 };
 export const createOrder = async (req, res) => {
     console.log('Request body:', req.body);  // Debugging log
-    const { id_product, customerName } = req.body;
-    console.log('Product ID:', id_product);   // Debugging log
+    const { id_productos, customerName } = req.body;
+    console.log('Product ID:', id_productos);   // Debugging log
     console.log('Customer Name:', customerName);   // Debugging log
     try {
-        const order = await create(id_product, customerName);
+        const order = await create(id_productos, customerName);
         res.status(201).json(order);
     } catch (err) {
         console.error(err.message);

@@ -1,4 +1,7 @@
 import pool from "../DB/configDB.js";
+import mercadopago from "mercadopago";
+import config from "../config/config.js"
+import fetch from "node-fetch";
 
 export let initPoint;
 
@@ -19,10 +22,11 @@ export const getOrderByName = async (customerName, code) => {
     const [rows] = await pool.query("SELECT * FROM ordenes WHERE customerName = ? AND code = ?", [customerName, code]);
     return rows;
 }
-const getProductDetails = async (id_product) => {
+const getProductDetails = async (id_productos) => {
     try {
-        const query = "SELECT name, price, quantity FROM productos WHERE id = ?";
-        const [rows] = await pool.query(query, [id_product]);
+        const query = "SELECT name_productos, price FROM productos WHERE id_productos = ?";
+        console.log(query);
+        const [rows] = await pool.query(query, [id_productos]);
         if (rows.length > 0) {
             return rows[0];
         } else {
@@ -33,188 +37,130 @@ const getProductDetails = async (id_product) => {
     }
 };
 
-export const create = async (id_product, customerName) => {
-    try {
-        const productDetails = await getProductDetails(id_product);
+export const create = async (id_productos, customerName) => {
+
+        const productDetails = await getProductDetails(id_productos);
         const randomNumber = generateRandomNumber();
-        const query = "INSERT INTO ordenes (productId, payment_status, customerName, random_number) VALUES (?, 0, ?, ?)";
-        const [result] = await pool.query(query, [id_product, customerName, randomNumber]);
-
-//         const preference = {
-//             items: [
-//                 {
-//                     title: productDetails.name,
-//                     quantity: productDetails.quantity,
-//                     unit_price: productDetails.price,
-//                 },
-//             ],
-//             external_reference: String(result.insertId),
-//             back_urls: {
-//                 success: "http://www.your-site.com/success",
-//                 failure: "http://www.your-site.com/failure",
-//                 pending: "http://www.your-site.com/pending",
-//             },
-//             auto_return: "approved",
-//         };
-
-//         const response = await mercadopago.preferences.create(preference, {
-//             headers: {
-//                 'Authorization': `Bearer `,
-//                 'Content-Type': 'application/json'
-//             }
-//         });
-
-//    
-//return { id: result.insertId, id_product, customerName, randomNumber, init_point: response.body.init_point };
-const client = new MercadoPago({  accessToken: config.access_token });
-const preference = new Preference(client);
-
-const body = {
-  items: [
-    {
-      id: productDetails.id_product,
-      title: productDetails.title,
-      description: productDetails.description,
-      picture_url: 'http://www.myapp.com/myimage.jpg',
-      category_id: 'car_electronics',
-      quantity: 1,
-      currency_id: 'BRL',
-      unit_price: 10,
-    },
-  ],
-  marketplace_fee: 0,
-  payer: {
-    name: 'Test',
-    surname: 'User',
-    email: 'your_test_email@example.com',
-    phone: {
-      area_code: '11',
-      number: '4444-4444',
-    },
-    identification: {
-      type: 'CPF',
-      number: '19119119100',
-    },
-    address: {
-      zip_code: '06233200',
-      street_name: 'Street',
-      street_number: 123,
-    },
+        const query = "INSERT INTO ordenes (id_productos, payment_status, customerName, random_number) VALUES (?, 0, ?, ?)";
+        const [result] = await pool.query(query, [id_productos, customerName, randomNumber]);
+        const url = 'https://api.mercadopago.com/checkout/preferences';
+const options = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer TEST-1787286201821420-081917-b64b89b6c480c4a6ca09c163e9abd359-164513396'
   },
-  back_urls: {
-    success: 'http://test.com/success',
-    failure: 'http://test.com/failure',
-    pending: 'http://test.com/pending',
-  },
-  differential_pricing: {
-    id: 1,
-  },
-  expires: false,
-  additional_info: 'Discount: 12.00',
-  auto_return: 'all',
-  binary_mode: true,
-  external_reference: '1643827245',
-  marketplace: 'marketplace',
-  notification_url: 'http://notificationurl.com',
-  operation_type: 'regular_payment',
-  payment_methods: {
-    default_payment_method_id: 'master',
-    excluded_payment_types: [
+  body: JSON.stringify({
+    additional_info: "Discount 12.00",
+    auto_return: "approved",
+    back_urls: {
+      success: "http://test.com/success",
+      pending: "http://test.com/pending",
+      failure: "http://test.com/failure"
+    },
+    differential_pricing: {
+      id: 1
+    },
+    expiration_date_from: "2024-08-19T09:37:52.000-04:00",
+    expiration_date_to: "2024-08-22T10:37:52.000-05:00",
+    expires: false,
+    external_reference: "1643827245",
+    items: [
       {
-        id: 'ticket',
-      },
+        id: productDetails.id_productos,
+        title: productDetails.name_productos,
+        description: "Birra",
+        picture_url: "http://www.myapp.com/myimage.jpg",
+        category_id: "car_electronics",
+        quantity: 1,
+        currency_id: "ARS",
+        unit_price: productDetails.price
+      }
     ],
-    excluded_payment_methods: [
-      {
-        id: '',
+    marketplace: "NONE",
+    marketplace_fee: 0,
+    metadata: null,
+    notification_url: "http://notificationurl.com",
+    payer: {
+      name: "John",
+      surname: "Doe",
+      email: "john@doe.com",
+      phone: {
+        area_code: "11",
+        number: 988888888
       },
-    ],
-    installments: 5,
-    default_installments: 1,
-  },
-  shipments: {
-    mode: 'custom',
-    local_pickup: false,
-    default_shipping_method: null,
-    free_methods: [
-      {
-        id: 1,
+      identification: {
+        type: "CPF",
+        number: "19119119100"
       },
-    ],
-    cost: 10,
-    free_shipping: false,
-    dimensions: '10x10x20,500',
-    receiver_address: {
-      zip_code: '06000000',
-      street_number: 123,
-      street_name: 'Street',
-      floor: '12',
-      apartment: '120A',
+      address: {
+        zip_code: "06233200",
+        street_name: "Example Street",
+        street_number: 123
+      },
+      date_created: "2024-04-01T00:00:00Z"
     },
-  },
-  statement_descriptor: 'Test Store',
+    payment_methods: {
+      excluded_payment_methods: [
+        {
+          id: "master"
+        }
+      ],
+      excluded_payment_types: [
+        {
+          id: "ticket"
+        }
+      ],
+      default_payment_method_id: "amex",
+      installments: 10,
+      default_installments: 5
+    },
+    shipments: {
+      local_pickup: false,
+      dimensions: "32 x 25 x 16",
+      default_shipping_method: null,
+      free_methods: [
+        {
+          id: null
+        }
+      ],
+      free_shipping: false,
+      receiver_address: {
+        zip_code: "72549555",
+        street_name: "Street address test",
+        city_name: "São Paulo",
+        state_name: "São Paulo",
+        street_number: 100,
+        country_name: "Brazil"
+      }
+    },
+    // tracks: [
+    //   {
+    //     type: "google_ad",
+    //     values: 
+    //   }
+    // ]
+  })
 };
 
-const response = await preference.create({ body })
-  .then(console.log)
-  .catch(console.log);
+try {
+  const response = await fetch(url, options); 
+  const data = await response.json(); 
+  console.log(data); 
 
-initPoint = response.body.init_point;
-
-
-} catch (err) {
-        throw new Error('Error creating order: ' + err.message);
-    }
+  return { 
+      id: result.insertId, 
+      id_product: id_productos, 
+      customerName, 
+      randomNumber, 
+      mercadopagoResponse: data 
+  }; 
+} catch (error) {
+  console.error('Error:', error);
+  throw new Error('Error creating order: ' + error.message); 
+}
 };
 
+ 
+    
 
-
-
-
-
-
-
-
-
-// import {orderManager} from "../DAL/manager/orderManager.js"
-
-// // Función para obtener todas las órdenes de un usuario
-// // const getOrdersByUserId = async (userId) => {
-// //   try {
-// //     const orders = await Order.find({ userId });
-// //     return orders;
-// //   } catch (error) {
-// //     throw new Error('Error fetching orders: ' + error.message);
-// //   }
-// // };
-
-
-//   export const getOrderByName = async (customerName, code) =>{
-//     const order = await orderManager.findByName(customerName, code);
-//     return order;
-//   }
-
-
-
-
-
-
-
-
-// Función para obtener una orden específica por su ID
-// const getOrderById = async ({ customerName: customerName, code: code }) => {
-//   try {
-//     const order = await ordermodel.findOne({ customerName: customerName, code: code }); // _id: orderId
-//     if (!order) {
-//       throw new Error('Order not found');
-//     }
-//     return order;
-//   } catch (error) {
-//     throw new Error('Error fetching order: ' + error.message);
-//   }
-// };
-
-// module.exports = {
-//   //getOrdersByUserId,
-//   getOrderById,
-// };
