@@ -42,7 +42,6 @@ export const handleIpnNotification = async (notificationData) => {
 
   } catch (error) {
     console.error('Error al procesar la notificación IPN:', error);
-    // ... (Manejo de errores adecuado)
   }
 };
 

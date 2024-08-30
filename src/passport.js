@@ -1,8 +1,7 @@
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import { ExtractJwt, Strategy as JWTStrategy } from "passport-jwt";
-import   
- { hashData, compareData } from "../src/utils/utils.js";
+import { hashData, compareData } from "../src/utils/utils.js";
 import { getById, getByEmail, create } from "../services/user.service.js"; 
 import config from "../src/config/config.js";
 
@@ -30,7 +29,7 @@ passport.use("signup", new LocalStrategy(
     }
 ));
 
-// Estrategia de inicio de sesión (login)
+// Estrategia de inicio de sesión
 passport.use("login", new LocalStrategy(
     { usernameField: "email" },
     async (email, password, done) => {
@@ -40,8 +39,7 @@ passport.use("login", new LocalStrategy(
         }
 
         try {
-            // Aquí debes adaptar la búsqueda del usuario para usar MySQL
-            const user = await getByEmail(email); // Asumiendo que tienes una función 'getByEmail' en tu servicio
+            const user = await getByEmail(email); 
 
             if (!user) {
                 return done(null, false, { message: "User not found" });
@@ -51,9 +49,6 @@ passport.use("login", new LocalStrategy(
             if (!isPasswordValid) {
                 return done(null, false, { message: "Invalid password" });
             }
-
-            // No necesitas actualizar la última conexión en este punto, ya que no estás usando MongoDB
-
             return done(null, user); 
         } catch (error) {
             return done(error);
@@ -70,7 +65,7 @@ passport.use("jwt", new JWTStrategy(
     async (jwtPayload,   
  done) => {
         try {
-            const user = await getById(jwtPayload.id); // Obtén el usuario por ID desde MySQL
+            const user = await getById(jwtPayload.id); 
             if (!user) {
                 return done(null, false);
             }

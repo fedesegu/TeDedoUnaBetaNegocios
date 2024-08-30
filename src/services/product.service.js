@@ -17,7 +17,7 @@ export const createProduct = async (req) => {
             throw new Error('Usuario no autenticado'); 
         }
 
-        const { name_productos, precio_productos, negocio_id } = req.body;
+        const { name_productos, price, negocio_id } = req.body;
 
         // 2. Validar que se proporcione un negocio_id
         if (!negocio_id) {
@@ -39,10 +39,10 @@ export const createProduct = async (req) => {
         }
 
         // 4. Insertar el producto con el ID del negocio 
-        const query = "INSERT INTO productos (name_productos, precio_productos, negocioid_productos) VALUES (?,?,?)";
-        const [row] = await pool.query(query, [name_productos, precio_productos, negocio_id]);
+        const query = "INSERT INTO productos (name_productos, price, negocioid_productos) VALUES (?,?,?)";
+        const [row] = await pool.query(query, [name_productos, price, negocio_id]);
 
-        return { id: row.insertId, name_productos, precio_productos, negocioid_productos: negocio_id };
+        return { id: row.insertId, name_productos, price, negocioid_productos: negocio_id };
 
     } catch (error) {
         throw new Error('Error creating producto: ' + error.message);

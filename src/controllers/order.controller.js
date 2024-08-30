@@ -23,7 +23,7 @@ import { getOrderByName, create} from "../services/order.service.js";
 export const getOrderByCustomerName = async (req, res) => {
     try {
         const { customerName, code } = req.body;
-        console.log("Received customerName:", customerName, "and code:", code); // Debug log
+        console.log("Received customerName:", customerName, "and code:", code); 
 
         if (!customerName || !code) {
             return res.status(400).json({ message: "customerName and code are required" });
@@ -37,10 +37,10 @@ export const getOrderByCustomerName = async (req, res) => {
     }
 };
 export const createOrder = async (req, res) => {
-    console.log('Request body:', req.body);  // Debugging log
+    console.log('Request body:', req.body);  
     const { id_productos, customerName } = req.body;
-    console.log('Product ID:', id_productos);   // Debugging log
-    console.log('Customer Name:', customerName);   // Debugging log
+    console.log('Product ID:', id_productos);  
+    console.log('Customer Name:', customerName);  
     try {
         const order = await create(id_productos, customerName);
         res.status(201).json(order);

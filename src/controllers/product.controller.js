@@ -24,8 +24,8 @@ export const createOneProduct = async (req, res) => {
 
 export const updateProduct = async (req, res) => {
     try {
-        const productId = req.params.id; // Obtener el ID del producto desde los parámetros de la ruta
-        const { newPrice, negocio_id } = req.body; // Obtener el nuevo precio y el ID del negocio desde el cuerpo de la solicitud
+        const productId = req.params.id; 
+        const { newPrice, negocio_id } = req.body;
 
         const result = await updatedProduct(req, productId); 
 

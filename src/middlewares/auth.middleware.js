@@ -1,15 +1,10 @@
-//middleware para el product.router.js por ejemplo
-
 
 import jwt from "jsonwebtoken";
 import config from "../config/config.js" 
 import CustomError from "../errors/error.generate.js";
 import { ErrorMessages, ErrorName } from "../errors/errors.enum.js";
 
-
 const secretKeyJwt = config.secret_jwt;
-
-
 
 export const authMiddleware = (roles) => {
     return (req, res, next) => {

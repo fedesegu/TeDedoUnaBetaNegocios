@@ -1,10 +1,9 @@
 import express from "express";
-//import mongoose from "mongoose";
 import dotenv from "dotenv";
 import bodyParser from "body-parser";
 import orderRoutes from "./routes/order.router.js";
 import usersRoutes from "./routes/user.router.js";
-//import viewsRouter from "./routes/views.router.js";
+import productRoutes from "./routes/product.router.js"
 import sessionRouter from "./routes/session.router.js";
 import negociosRouter from "./routes/negocios.router.js";
 import mercadoPagoRouter from "./routes/mercadopago.router.js"
@@ -15,13 +14,6 @@ dotenv.config();
 
 const app = express();
 app.use(express.json());
-
-// mongoose.connect(process.env.MONGO_URI, {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true,
-// })
-// .then(() => console.log('MongoDB connected'))
-// .catch(err => console.error(err));
 
 app.get('/datos', async (req, res) => {
     try {
@@ -39,7 +31,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/api/users', usersRoutes);
 app.use('/api/orders', orderRoutes);
-//app.use('/api/views', viewsRouter);
+app.use('/api/productos', productRoutes);
 app.use('/api/session', sessionRouter);
 app.use('/api/negocios', negociosRouter);
 app.use('/api/mercadopago', mercadoPagoRouter);

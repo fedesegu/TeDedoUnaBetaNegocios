@@ -28,12 +28,10 @@ export const getNegociosByids = async (req, res) => {
 
 export const getUserBusinessesController = async (req, res) => {
   try {
-    // Verificar y decodificar el token JWT de las cookies
     const token = req.cookies.token;
     if (!token) {
       return res.status(401).json({ message: 'Authentication token is missing' });
     }
-
     // Decodificar el token JWT para obtener el userId
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const userId = decoded.id;

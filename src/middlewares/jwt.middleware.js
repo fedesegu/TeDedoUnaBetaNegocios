@@ -1,9 +1,7 @@
 import jwt from "jsonwebtoken";
 import config from "../config/config.js" 
 
-
 const secretKeyJwt = config.secret_jwt;
-
 
 export const jwtValidation = (req, res, next) => {
     try {
