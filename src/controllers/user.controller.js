@@ -1,11 +1,12 @@
 
-import { getAll, getById, create} from "../services/user.service.js";
+import { getAll, getById, create } from "../services/user.service.js";
 //import { jwtValidation } from "../middlewares/jwt.middleware.js";
 //import { authMiddleware } from "../middlewares/auth.middleware.js";
 //import { transporter } from "../utils/nodemailer.js"
 import passport from "passport";
 import CustomError from "../errors/error.generate.js";
 import { ErrorMessages, ErrorName } from "../errors/errors.enum.js";
+import { updatedOne } from "../services/user.service.js"
 
 
 export const findUserById = (req, res) => {
@@ -32,6 +33,10 @@ export const createUser =  async (req, res) => {
 export const findAllUsers = async (req, res) => {
     const users = await getAll();
     return users
+}
+
+export const updateUser = async (req, res) =>{
+
 }
 
 

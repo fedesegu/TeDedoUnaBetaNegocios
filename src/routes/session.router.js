@@ -1,9 +1,9 @@
 import { Router } from "express";
 import  config  from "../config/config.js";
-//import { usersManager } from "../DAL/daos/mongoDB/usersManagerDB.js";
+//import { usersManager } from "../DAL/manager/userManager.js";
 import { hashData, compareData } from "../utils/utils.js";
 import { generateToken } from "../utils/utils.js";
-//import { transporter } from "../utils/nodemailer.js"
+import { transporter } from "../utils/nodemailer.js"
 import jwt from 'jsonwebtoken';
 import passport from "passport";
 
@@ -84,7 +84,7 @@ router.get("/signout", async (req, res) => {
         const secretKeyJwt = config.secret_jwt;        
         const token = req.cookies.token;
         const user = jwt.verify(token, secretKeyJwt);
-        const userDate = await Users.updateOne(
+        const userDate = await userManager.updateOne(
             { _id: user.sub },
             { last_connection: new Date() } 
         );

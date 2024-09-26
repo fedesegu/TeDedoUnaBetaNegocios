@@ -23,8 +23,17 @@ export const createProduct = async (req) => {
         if (!negocio_id) {
             throw new Error('Debe seleccionar un negocio para crear el producto');
         }
+         // 3. Validar que se proporcionen name_productos y price
+         if (!name_productos || !price) {
+            throw new Error('Debe proporcionar el nombre del producto y el precio');
+        }
 
-        // 3. Verificar si el negocio_id proporcionado pertenece al usuario logueado
+        // 4. Validar que el precio sea un número positivo
+        if (isNaN(price) || price <= 0) {
+            throw new Error('El precio debe ser un número positivo');
+        }
+
+        // 5. Verificar si el negocio_id proporcionado pertenece al usuario logueado
         const negociosQuery = `
             SELECT negocio_id 
             FROM asignaciones 
@@ -38,7 +47,7 @@ export const createProduct = async (req) => {
             throw new Error('El negocio seleccionado no pertenece al usuario');
         }
 
-        // 4. Insertar el producto con el ID del negocio 
+        // 6. Insertar el producto con el ID del negocio 
         const query = "INSERT INTO productos (name_productos, price, negocioid_productos) VALUES (?,?,?)";
         const [row] = await pool.query(query, [name_productos, price, negocio_id]);
 
@@ -77,9 +86,9 @@ export const getProductById = async(id_productos)=>{
     export const updatedProduct = async (req, id_productos) => { 
         try {
             // 1. Validar usuario logueado
-            if (!req.user) {
-                throw new Error('Usuario no autenticado'); 
-            }
+            // if (!req.user) {
+            //     throw new Error('Usuario no autenticado'); 
+            // }
     
             const { newPrice, negocio_id } = req.body; 
     

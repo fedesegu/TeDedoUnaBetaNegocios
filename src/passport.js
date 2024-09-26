@@ -10,8 +10,7 @@ const secretKeyJwt = config.secret_jwt;
 passport.use("signup", new LocalStrategy(
     { passReqToCallback: true, usernameField: "email" },
     async (req, email, password, done) => {
-        const { name,   
- lastName } = req.body;
+        const { name, lastName } = req.body;
         if (!name || !lastName || !email || !password) {
             return done(null, false, { message: 'All fields are required' });
         }

@@ -6,8 +6,7 @@ import { findUserById, findAllUsers, createUser  } from "../controllers/user.con
 const router = Router();
 
 
-router.get("/", passport.authenticate("current", {session:false}), findAllUsers
-  );
+router.get("/", passport.authenticate("current", {session:false}), findAllUsers);
 router.get("/:uid", findUserById);
 router.post("/", createUser);
 

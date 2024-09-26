@@ -29,6 +29,19 @@ export const deleteOne = async (id) => {
     await pool.query("DELETE FROM usuarios WHERE id = ?", [id]);
 };
 
+export const updatedOne = async (id) => {
+    try {
+        if(!req.user){
+            throw new Error('Usuario no autenticado'); 
+        }
+       const {newPassword, id } = req.body;
+       const newPasswordHasheado = await hashData(newPassword);
+       const query = await pool.query("UPDATE usuarios SET password = ? WHERE id = ? ")
+       const [result] = pool.query(query, [newPasswordHasheado, id])
+    } catch (error) {
+        
+    }
+}
 
 
 

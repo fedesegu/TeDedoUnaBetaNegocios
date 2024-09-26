@@ -24,10 +24,8 @@ export const createOneProduct = async (req, res) => {
 
 export const updateProduct = async (req, res) => {
     try {
-        const productId = req.params.id; 
-        const { newPrice, negocio_id } = req.body;
-
-        const result = await updatedProduct(req, productId); 
+        const { id_productos, newPrice, negocio_id } = req.body;
+        const result = await updatedProduct(req); 
 
         res.status(200).json(result); 
     } catch (error) {
