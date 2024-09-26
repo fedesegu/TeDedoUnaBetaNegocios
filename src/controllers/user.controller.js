@@ -21,8 +21,8 @@ export const findUserById = (req, res) => {
 }};
 
 export const createUser =  async (req, res) => {
-    const { username, password } = req.body;
-    if (!username || !password) {
+    const { name_usuarios, password_usuarios } = req.body;
+    if (!name_usuarios || !password_usuarios) {
         return CustomError.generateError(ErrorMessages.ALL_FIELDS_REQUIRED,400,ErrorName.ALL_FIELDS_REQUIRED);
 
     }
