@@ -17,9 +17,9 @@ const app = express();
 app.use(express.json());
 
 app.use(cors({
-    origin: 'http://localhost:4000', // El origen permitido
-    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Métodos permitidos
-    credentials: true // Permitir el envío de credenciales
+    origin: 'http://localhost:4000',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], 
+    credentials: true 
 }));
 
 app.get('/datos', async (req, res) => {
