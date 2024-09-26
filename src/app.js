@@ -7,6 +7,7 @@ import productRoutes from "./routes/product.router.js"
 import sessionRouter from "./routes/session.router.js";
 import negociosRouter from "./routes/negocios.router.js";
 import mercadoPagoRouter from "./routes/mercadopago.router.js"
+const cors = require('cors');
 
 import pool from "./DB/configDB.js";
 
@@ -14,6 +15,12 @@ dotenv.config();
 
 const app = express();
 app.use(express.json());
+
+app.use(cors({
+    origin: 'http://localhost:4000', // El origen permitido
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Métodos permitidos
+    credentials: true // Permitir el envío de credenciales
+}));
 
 app.get('/datos', async (req, res) => {
     try {
