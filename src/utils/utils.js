@@ -8,8 +8,12 @@ const secretKeyJwt = config.secret_jwt;
 
 export const __dirname = join(dirname(fileURLToPath(import.meta.url)), "..");
 
-export const hashData = async (data) => {
-    return bcrypt.hash(data, 10);
+export const hashData = async (data, saltRounds = 10) => {
+    if (!data) {
+        throw new Error('Data is required for hashing');
+    }
+    const salt = await bcrypt.genSalt(saltRounds);
+    return bcrypt.hash(data, salt);
 };
 
 export const compareData = async (data, hashedData) => {

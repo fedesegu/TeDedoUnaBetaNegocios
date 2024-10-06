@@ -19,9 +19,10 @@ export const getByEmail = async(email) => {
 }
 
 export const create = async (user) => {
-    const hashPassword = await hashData(user.password);
-    const userDto = new UsersRequestDto({ ...user, password: hashPassword });
-    const [result] = await pool.query("INSERT INTO usuarios (name_usuarios, password_usuarios) VALUES (?, ?)", [userDto.username, userDto.password]);
+    //const hashPassword = await hashData(user.password_usuarios);
+    const userDto = new UsersRequestDto({ name_usuarios: user.name_usuarios, 
+        password_usuarios: user.password_usuarios});
+    const [result] = await pool.query("INSERT INTO usuarios (name_usuarios, password_usuarios) VALUES (?, ?)", [userDto.name_usuarios, userDto.password_usuarios]);
     return { id: result.insertId, ...userDto };
 }
 

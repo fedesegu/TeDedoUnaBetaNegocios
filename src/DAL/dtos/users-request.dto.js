@@ -1,6 +1,6 @@
 export default class UsersRequest {
-    constructor({username, password}) {
-      this.username = username;
-      this.password = password;
+    constructor({name_usuarios, password_usuarios}) {
+      this.name_usuarios = name_usuarios;
+      this.password_usuarios = password_usuarios;
     }
   }
