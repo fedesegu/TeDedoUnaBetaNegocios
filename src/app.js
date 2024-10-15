@@ -9,7 +9,7 @@ import negociosRouter from "./routes/negocios.router.js";
 import mercadoPagoRouter from "./routes/mercadopago.router.js"
 import cors from "cors";
 
-//comentario 
+//comentario  2
 import pool from "./DB/configDB.js";
 
 dotenv.config();
